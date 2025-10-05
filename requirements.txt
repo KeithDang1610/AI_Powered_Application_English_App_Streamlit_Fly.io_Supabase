@@ -1,0 +1,12 @@
+streamlit
+pandas
+sqlalchemy
+bcrypt
+gTTS
+python-dotenv
+pydub
+python-multipart
+google.generativeai
+openpyxl
+supabase
+psycopg2

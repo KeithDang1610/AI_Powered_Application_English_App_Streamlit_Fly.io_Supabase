@@ -1,0 +1,12 @@
+.env
+check_col.py
+check_db.py
+test_api.py
+test_llm_api.py
+vocab.db
+appenv
+data
+scripts
+nutritions_chatbot.py
+test_voice.py
+add_col.py
