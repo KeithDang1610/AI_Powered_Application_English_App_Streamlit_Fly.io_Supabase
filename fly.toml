@@ -1,0 +1,28 @@
+# fly.toml - cấu hình deploy Fly.io cho Streamlit
+
+app = "english-application"     # Tên app trên Fly.io
+primary_region = "iad"           # Region server (vd: iad, sfo, ams,...)
+kill_signal = "SIGINT"           # Cách Fly dừng container khi deploy lại
+kill_timeout = 5
+processes = []
+
+[build]
+  dockerfile = "Dockerfile"     # Tên Dockerfile của bạn
+
+[env]
+  # Thêm biến môi trường nếu cần, ví dụ:
+  # STREAMLIT_SERVER_HEADLESS = "true"
+  # STREAMLIT_SERVER_PORT = "8080"
+
+[[services]]
+  internal_port = 8080           # Port mà Streamlit lắng nghe
+  protocol = "tcp"
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80                     # Port public HTTP
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443                    # Port public HTTPS
+
