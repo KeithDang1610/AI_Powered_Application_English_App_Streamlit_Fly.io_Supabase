@@ -10,10 +10,6 @@ from dotenv import load_dotenv, dotenv_values
 # # Load .env into a dictionary
 # config = dotenv_values(dotenv_path)
 
-
-
-
-
 class GeminiWrapper:
     def __init__(self, api_key, model_name ="gemini-2.5-flash-lite"):
         genai.configure(api_key=api_key)
@@ -31,7 +27,7 @@ config_for_passage = {
 }
 
 config_for_chunk = {
-    "temperature": 0.3,
+    "temperature": 0.2,
     "top_p": 0.9,
     "top_k": 50,
 }
@@ -186,8 +182,14 @@ def generate_passage_with_chunks(topic="daily life", length=150):
     Generate a passage and highlight common English chunks with ** **.
     """
     prompt = (
-        f"Write a short passage of about {length} words about {topic}. "
-        f"Highlight common English chunks (multi-word expressions, collocations, idioms) in **bold**."
+        # f"Write a short natural and common passage of about {length} words about {topic}. "
+        # f"Highlight common English chunks (multi-word expressions, collocations, idioms) in **bold**."
+        "You are a writing assistant that generates short, natural, and coherent English passages commonly used by native speakers. "
+        f"Length: about {length} words. "
+        f"Topic: {topic}. "
+        "Style: natural, common, everyday English that feels authentic. "
+        "Highlight common English chunks (multi-word expressions, collocations, idioms) by putting them in bold. "
+        "The passage should read smoothly, without sounding artificial or overly formal."
     )
 
     resp = gemini.generate(prompt, config_for_chunk)

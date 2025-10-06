@@ -7,6 +7,22 @@ import streamlit as st
 import json
 import streamlit.components.v1 as components
 
+# def tts_button(word: str, wid: int):
+#     components.html(
+#         f"""
+#         <button onclick="speak{wid}()" style="border:none;background:none;cursor:pointer;font-size:18px;">
+#             🔊
+#         </button>
+#         <script>
+#         function speak{wid}() {{
+#             var utterance = new SpeechSynthesisUtterance("{word}");
+#             speechSynthesis.speak(utterance);
+#         }}
+#         </script>
+#         """,
+#         height=40,
+#     )
+
 def tts_button(word: str, wid: int):
     components.html(
         f"""
@@ -14,14 +30,34 @@ def tts_button(word: str, wid: int):
             🔊
         </button>
         <script>
+        var bestVoice{wid} = null;
+
+        function pickBestVoice{wid}() {{
+            var voices = speechSynthesis.getVoices();
+            // Ưu tiên en-US, nếu không có thì chọn voice bất kỳ có "en"
+            bestVoice{wid} = voices.find(v => v.lang === "en-US") 
+                          || voices.find(v => v.lang.startsWith("en")) 
+                          || null;
+        }}
+
+        speechSynthesis.onvoiceschanged = pickBestVoice{wid};
+        pickBestVoice{wid}(); // gọi ngay lần đầu
+
         function speak{wid}() {{
             var utterance = new SpeechSynthesisUtterance("{word}");
+            if (bestVoice{wid}) {{
+                utterance.voice = bestVoice{wid};
+                utterance.lang = bestVoice{wid}.lang;
+            }} else {{
+                utterance.lang = "en-US"; // fallback cuối cùng
+            }}
             speechSynthesis.speak(utterance);
         }}
         </script>
         """,
         height=40,
     )
+
 
 def tts_passage_button(text: str, key: str):
     safe_text = text.replace('"', '\\"').replace("\n", " ")
