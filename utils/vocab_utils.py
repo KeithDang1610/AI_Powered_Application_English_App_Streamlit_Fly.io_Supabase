@@ -15,10 +15,11 @@ def search_vocab_for_user(conn, user_id: int, query: str = None, limit: int = 25
     conditions = []
     params = [user_id]   # cho uv.user_id = %s
 
+
     if query:
         q = f"%{query.lower()}%"
         conditions.append("w.word ILIKE %s")
-        params.extend(q)
+        params.append(q)
 
     if min_rank is not None:
         conditions.append("w.ranking >= %s")

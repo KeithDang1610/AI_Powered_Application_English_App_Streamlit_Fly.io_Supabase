@@ -69,7 +69,8 @@ def main():
 
         if "last_filter" not in st.session_state or st.session_state.last_filter != filter_key:
             st.session_state.rows = search_vocab_for_user(
-                conn, user_id,
+                conn, 
+                user_id,
                 query=q if q.strip() else None,
                 limit=limit,
                 min_rank=None if q.strip() else min_rank,
